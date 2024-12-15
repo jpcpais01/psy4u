@@ -44,7 +44,7 @@ const SplashScreen = () => {
           animate-pulse
         "
       >
-        You are OK
+        Psy4u
       </div>
     </div>
   );
