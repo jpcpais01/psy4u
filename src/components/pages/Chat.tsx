@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
   PaperAirplaneIcon, 
   ArrowPathIcon, 
@@ -30,6 +30,32 @@ export default function Chat() {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [showPersonalityMenu, setShowPersonalityMenu] = useState(false)
   const [currentPersonality, setCurrentPersonality] = useState<'psychologist' | 'religious' | 'friend'>('psychologist')
+
+  const getAIAvatarColors = () => {
+    switch (currentPersonality) {
+      case 'psychologist':
+        return 'from-emerald-400 to-primary';
+      case 'religious':
+        return 'from-amber-400 to-amber-600';
+      case 'friend':
+        return 'from-indigo-400 to-indigo-600';
+      default:
+        return 'from-emerald-400 to-primary';
+    }
+  };
+
+  const getAIAvatarIcon = () => {
+    switch (currentPersonality) {
+      case 'psychologist':
+        return BookOpenIcon;
+      case 'religious':
+        return SparklesIcon;
+      case 'friend':
+        return HeartIcon;
+      default:
+        return UserCircleIcon;
+    }
+  };
 
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -108,8 +134,8 @@ export default function Chat() {
               className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} items-end space-x-3`}
             >
               {!message.isUser && (
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-primary flex items-center justify-center text-white text-sm font-medium shadow-lg">
-                  AI
+                <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${getAIAvatarColors()} flex items-center justify-center text-white text-sm font-medium shadow-lg`}>
+                  {React.createElement(getAIAvatarIcon(), { className: "w-5 h-5" })}
                 </div>
               )}
               <div
@@ -143,8 +169,8 @@ export default function Chat() {
             animate={{ opacity: 1, y: 0 }}
             className="flex items-end space-x-3"
           >
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-primary flex items-center justify-center text-white text-sm font-medium shadow-lg">
-              AI
+            <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${getAIAvatarColors()} flex items-center justify-center text-white text-sm font-medium shadow-lg`}>
+              {React.createElement(getAIAvatarIcon(), { className: "w-5 h-5" })}
             </div>
             <div className="peaceful-card rounded-[1.5rem] rounded-bl-sm px-6 py-4 shadow-sm">
               <div className="flex space-x-2">
