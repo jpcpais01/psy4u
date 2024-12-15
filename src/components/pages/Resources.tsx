@@ -83,7 +83,7 @@ export default function Resources() {
       </div>
       <GoogleAd 
         adClient="pub-2905641464701628" 
-        adSlot="XXXXXXXXXX" 
+        adSlot="6800217849" 
       />
     </div>
   )
