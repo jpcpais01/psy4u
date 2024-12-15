@@ -1,4 +1,5 @@
 import ThemeToggle from '@/components/ThemeToggle'
+import { GoogleAd } from '../GoogleAds';
 
 export default function Resources() {
   return (
@@ -80,6 +81,10 @@ export default function Resources() {
           </section>
         </div>
       </div>
+      <GoogleAd 
+        adClient="pub-2905641464701628" 
+        adSlot="XXXXXXXXXX" 
+      />
     </div>
   )
 }
