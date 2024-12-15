@@ -16,6 +16,12 @@ export default function CarouselWrapper() {
     containScroll: 'trimSnaps',
     skipSnaps: false,
     inViewThreshold: 0.7,
+    axis: 'x',
+    direction: 'ltr',
+    watchDrag: true,
+    duration: 20,
+    startIndex: 1,
+    slidesToScroll: 1
   })
   const [selectedIndex, setSelectedIndex] = useState(1)
 
