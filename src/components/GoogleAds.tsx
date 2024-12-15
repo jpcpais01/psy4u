@@ -15,7 +15,7 @@ export const GoogleAd: React.FC<GoogleAdProps> = ({
 }) => {
   useEffect(() => {
     try {
-      // @ts-ignore
+      // @ts-expect-error - Handling global window object for AdSense
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (error) {
       console.error('Google Ads script error:', error);
