@@ -1,7 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { PaperAirplaneIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
+import { 
+  PaperAirplaneIcon, 
+  ArrowPathIcon, 
+  UserCircleIcon,
+  HeartIcon,
+  BookOpenIcon,
+  SparklesIcon
+} from '@heroicons/react/24/outline'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface Message {
@@ -21,6 +28,8 @@ export default function Chat() {
   const [input, setInput] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [showPersonalityMenu, setShowPersonalityMenu] = useState(false)
+  const [currentPersonality, setCurrentPersonality] = useState<'psychologist' | 'religious' | 'friend'>('psychologist')
 
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -39,6 +48,7 @@ export default function Chat() {
         },
         body: JSON.stringify({
           messages: [...messages, newMessage],
+          personality: currentPersonality,
         }),
       });
 
@@ -166,14 +176,92 @@ export default function Chat() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type your message..."
-              className="w-full bg-white/80 dark:bg-neutral-800/80 backdrop-blur-md text-neutral-900 dark:text-white placeholder-neutral-500 rounded-2xl py-4 px-14 pr-14 outline-none transition-all duration-200 shadow-sm hover:shadow-md focus:shadow-lg"
+              className="w-full bg-white/80 dark:bg-neutral-800/80 backdrop-blur-md text-neutral-900 dark:text-white placeholder-neutral-500 rounded-2xl py-4 px-14 pr-28 outline-none transition-all duration-200 shadow-sm hover:shadow-md focus:shadow-lg"
             />
-            <button
-              type="submit"
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center transition-all duration-200 hover:bg-primary/90 hover:scale-105 active:scale-95 shadow-lg shadow-primary/25"
-            >
-              <PaperAirplaneIcon className="w-5 h-5 -rotate-45" />
-            </button>
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center space-x-2">
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setShowPersonalityMenu(!showPersonalityMenu)}
+                  className="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center transition-all duration-200 hover:bg-primary/90 hover:scale-105 active:scale-95 shadow-lg shadow-primary/25"
+                >
+                  <UserCircleIcon className="w-5 h-5" />
+                </button>
+                <AnimatePresence>
+                  {showPersonalityMenu && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute right-0 bottom-14 bg-white dark:bg-neutral-800 rounded-xl shadow-xl p-1.5 min-w-[200px] z-50 border border-neutral-200 dark:border-neutral-700"
+                    >
+                      <div className="space-y-1.5">
+                        <button
+                          onClick={() => {
+                            setCurrentPersonality('psychologist')
+                            setShowPersonalityMenu(false)
+                          }}
+                          className={`w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl transition-all duration-200 group ${
+                            currentPersonality === 'psychologist' 
+                              ? 'bg-primary text-white' 
+                              : 'hover:bg-neutral-100 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300'
+                          }`}
+                        >
+                          <BookOpenIcon className={`w-5 h-5 ${
+                            currentPersonality === 'psychologist' 
+                              ? 'text-white' 
+                              : 'text-neutral-500 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-200'
+                          }`} />
+                          <span>Psychologist</span>
+                        </button>
+                        <button
+                          onClick={() => {
+                            setCurrentPersonality('religious')
+                            setShowPersonalityMenu(false)
+                          }}
+                          className={`w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl transition-all duration-200 group ${
+                            currentPersonality === 'religious' 
+                              ? 'bg-primary text-white' 
+                              : 'hover:bg-neutral-100 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300'
+                          }`}
+                        >
+                          <SparklesIcon className={`w-5 h-5 ${
+                            currentPersonality === 'religious' 
+                              ? 'text-white' 
+                              : 'text-neutral-500 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-200'
+                          }`} />
+                          <span>Religious</span>
+                        </button>
+                        <button
+                          onClick={() => {
+                            setCurrentPersonality('friend')
+                            setShowPersonalityMenu(false)
+                          }}
+                          className={`w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl transition-all duration-200 group ${
+                            currentPersonality === 'friend' 
+                              ? 'bg-primary text-white' 
+                              : 'hover:bg-neutral-100 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300'
+                          }`}
+                        >
+                          <HeartIcon className={`w-5 h-5 ${
+                            currentPersonality === 'friend' 
+                              ? 'text-white' 
+                              : 'text-neutral-500 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-200'
+                          }`} />
+                          <span>Friend</span>
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              <button
+                type="submit"
+                className="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center transition-all duration-200 hover:bg-primary/90 hover:scale-105 active:scale-95 shadow-lg shadow-primary/25"
+              >
+                <PaperAirplaneIcon className="w-5 h-5 -rotate-45" />
+              </button>
+            </div>
           </div>
         </div>
       </form>
