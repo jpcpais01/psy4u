@@ -16,10 +16,10 @@ export default function Resources() {
             <h2 className="text-lg font-medium text-neutral-800 dark:text-neutral-100 mb-4">Daily Wisdom</h2>
             <div className="bg-primary/5 dark:bg-primary/10 rounded-xl p-6 border border-primary/10 dark:border-primary/20">
               <p className="text-lg text-neutral-800 dark:text-neutral-100 mb-2 font-medium">
-                &quot;The mind is everything. What you think, you become.&quot;
+                &quot;All of humanity's problems stem from man's inability to sit quietly in a room alone.&quot;
               </p>
               <p className="text-sm text-neutral-600 dark:text-neutral-300">
-                - Buddha
+                - Blaise Pascal
               </p>
             </div>
           </section>

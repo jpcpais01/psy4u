@@ -6,6 +6,7 @@ import Journal from './pages/Journal'
 import Chat from './pages/Chat'
 import Resources from './pages/Resources'
 import Navigation from './Navigation'
+import SplashScreen from './SplashScreen';
 
 export default function CarouselWrapper() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
@@ -42,6 +43,7 @@ export default function CarouselWrapper() {
 
   return (
     <div className="h-screen flex flex-col bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9] dark:from-neutral-900 dark:to-neutral-950">
+      <SplashScreen />
       <div className="flex-1 overflow-hidden" ref={emblaRef}>
         <div className="flex h-full">
           <div className="flex-[0_0_100%] min-w-0 relative p-4">
