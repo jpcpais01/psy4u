@@ -2,8 +2,10 @@ import ThemeToggle from '@/components/ThemeToggle'
 import { GoogleAd } from '../GoogleAds';
 import { useState } from 'react';
 import { readingListItems } from '@/app/reading-list/items';
+import { selfCareItems } from '@/app/self-care/items';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import BreathingExercise from '../mini-apps/BreathingExercise';
 
 // Reading List Card Component
 const ReadingListCard = ({ 
@@ -25,6 +27,55 @@ const ReadingListCard = ({
     <div>
       <h3 className="font-medium text-neutral-800 dark:text-neutral-100 mb-1">{item.title}</h3>
       <p className="text-sm text-neutral-600 dark:text-neutral-300 line-clamp-2">
+        {item.description}
+      </p>
+    </div>
+  </article>
+);
+
+// Self Care Card Component
+const SelfCareCard = ({ 
+  item, 
+  onSelect 
+}: { 
+  item: typeof selfCareItems[0], 
+  onSelect: (id: number) => void 
+}) => (
+  <article 
+    onClick={() => item.status === 'active' && onSelect(item.id)}
+    className={`flex items-start gap-4 p-4 rounded-xl transition-colors 
+      ${item.status === 'active' 
+        ? 'bg-neutral-50 dark:bg-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer' 
+        : 'bg-neutral-100 dark:bg-neutral-900 opacity-60 cursor-not-allowed'}`}
+  >
+    <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0
+      ${item.status === 'active' 
+        ? 'bg-primary/10 dark:bg-primary/20' 
+        : 'bg-neutral-200 dark:bg-neutral-700'}`}>
+      <svg className={`w-6 h-6 
+        ${item.status === 'active' 
+          ? 'text-primary dark:text-primary/80' 
+          : 'text-neutral-400 dark:text-neutral-500'}`} 
+        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          strokeWidth={2} 
+          d={item.icon} 
+        />
+      </svg>
+    </div>
+    <div>
+      <h3 className={`font-medium mb-1 
+        ${item.status === 'active' 
+          ? 'text-neutral-800 dark:text-neutral-100' 
+          : 'text-neutral-500 dark:text-neutral-600'}`}>
+        {item.title}
+      </h3>
+      <p className={`text-sm 
+        ${item.status === 'active' 
+          ? 'text-neutral-600 dark:text-neutral-300' 
+          : 'text-neutral-400 dark:text-neutral-500'}`}>
         {item.description}
       </p>
     </div>
@@ -67,11 +118,16 @@ const ReadingPage = ({
 );
 
 export default function Resources() {
-  const [view, setView] = useState<'main' | 'reading-list' | 'reading-item'>('main');
+  const [view, setView] = useState<'main' | 'reading-list' | 'reading-item' | 'self-care' | 'self-care-item'>('main');
   const [selectedReadingItem, setSelectedReadingItem] = useState<number | null>(null);
+  const [selectedSelfCareItem, setSelectedSelfCareItem] = useState<number | null>(null);
 
   const handleReadingListClick = () => {
     setView('reading-list');
+  };
+
+  const handleSelfCareClick = () => {
+    setView('self-care');
   };
 
   const handleReadingItemSelect = (id: number) => {
@@ -86,6 +142,16 @@ export default function Resources() {
   const handleBackToMain = () => {
     setView('main');
     setSelectedReadingItem(null);
+  };
+
+  const handleSelfCareItemSelect = (id: number) => {
+    setSelectedSelfCareItem(id);
+    setView('self-care-item');
+  };
+
+  const handleBackToSelfCare = () => {
+    setView('self-care');
+    setSelectedSelfCareItem(null);
   };
 
   return (
@@ -126,7 +192,10 @@ export default function Resources() {
                   <p className="text-sm text-neutral-700 dark:text-neutral-300">Curated articles and books</p>
                 </button>
                 
-                <button className="p-4 rounded-xl bg-secondary dark:bg-neutral-700 hover:bg-secondary/90 dark:hover:bg-neutral-600 transition-colors text-left group">
+                <button 
+                  onClick={handleSelfCareClick}
+                  className="p-4 rounded-xl bg-secondary dark:bg-neutral-700 hover:bg-secondary/90 dark:hover:bg-neutral-600 transition-colors text-left group"
+                >
                   <svg className="w-6 h-6 text-green-600 dark:text-green-400 mb-2 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
@@ -156,6 +225,41 @@ export default function Resources() {
                 />
               ))}
             </div>
+          </section>
+        )}
+
+        {view === 'self-care' && (
+          <section className="peaceful-card p-6">
+            <button 
+              onClick={handleBackToMain} 
+              className="mb-4 text-sm text-neutral-600 dark:text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-100 transition-colors"
+            >
+              ← Back to Main
+            </button>
+            <h2 className="text-lg font-medium text-neutral-800 dark:text-neutral-100 mb-4">Self-Care Tools</h2>
+            
+            <div className="space-y-4">
+              {selfCareItems.map((item) => (
+                <SelfCareCard 
+                  key={item.id} 
+                  item={item} 
+                  onSelect={handleSelfCareItemSelect} 
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {view === 'self-care-item' && selectedSelfCareItem !== null && (
+          <section className="peaceful-card p-6">
+            <button 
+              onClick={handleBackToSelfCare} 
+              className="mb-4 text-sm text-neutral-600 dark:text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-100 transition-colors"
+            >
+              ← Back to Self-Care Tools
+            </button>
+            
+            {selectedSelfCareItem === 1 && <BreathingExercise />}
           </section>
         )}
 
