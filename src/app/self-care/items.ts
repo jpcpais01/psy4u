@@ -22,13 +22,6 @@ export const selfCareItems = [
   },
   {
     id: 4,
-    title: 'Stress Relief Games',
-    description: 'Coming soon: Interactive mini-games to help reduce stress and anxiety.',
-    icon: 'M4 8V4m0 0h4M4 4l3 3m13 0l3 3m0 0v4m0 0h-4m4 0l-3-3',
-    status: 'soon'
-  },
-  {
-    id: 5,
     title: 'Daily Affirmations',
     description: 'Coming soon: Positive affirmations to boost mental wellness.',
     icon: 'M15 12a3 3 0 11-6 0 3 3 0 016 0z M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',

@@ -60,7 +60,7 @@ const BreathingExercise = () => {
 
   // Configuration
   const totalCycles = 3;
-  const maxCycles = 5;
+  // Removed maxCycles as it was unused
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
