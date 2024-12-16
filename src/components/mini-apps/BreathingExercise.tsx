@@ -130,14 +130,10 @@ const BreathingExercise = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-neutral-800 rounded-2xl p-6 shadow-lg space-y-6">
-      <div className="flex justify-between items-center">
-        <h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-100">
-          Breathing Exercise
-        </h3>
-        
+    <div className="bg-white dark:bg-neutral-800 rounded-3xl p-6 shadow-2xl space-y-6 w-full max-w-md mx-auto">
+      <div className="flex flex-col items-center space-y-6">
         {/* Pattern Selector */}
-        <div className="relative">
+        <div className="relative w-full max-w-xs">
           <select 
             value={selectedPattern.id}
             onChange={(e) => {
@@ -145,7 +141,7 @@ const BreathingExercise = () => {
               if (pattern) setSelectedPattern(pattern);
             }}
             disabled={isActive}
-            className="bg-neutral-100 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 rounded-lg px-3 py-1 text-sm"
+            className="w-full appearance-none bg-neutral-100 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 rounded-full px-4 py-2 text-sm font-medium cursor-pointer hover:bg-neutral-200 dark:hover:bg-neutral-600 transition-colors"
           >
             {BREATHING_PATTERNS.map(pattern => (
               <option key={pattern.id} value={pattern.id}>
@@ -153,84 +149,92 @@ const BreathingExercise = () => {
               </option>
             ))}
           </select>
-        </div>
-      </div>
-
-      {/* Pattern Description */}
-      <div className="text-center">
-        <p className="text-sm text-neutral-600 dark:text-neutral-300">
-          {selectedPattern.description}
-        </p>
-      </div>
-
-      {/* Timer and Visualization */}
-      <div className="flex flex-col items-center space-y-4">
-        {/* Circular Progress */}
-        <div className="relative w-56 h-56">
-          <svg className="w-full h-full transform -rotate-90">
-            <circle
-              cx="112"
-              cy="112"
-              r="100"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="8"
-              className="text-neutral-200 dark:text-neutral-700"
-            />
-            <circle
-              cx="112"
-              cy="112"
-              r="100"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="12"
-              strokeDasharray="628"
-              strokeDashoffset={628 - (628 * getProgressPercentage()) / 100}
-              className={`${phaseColors[phase]} transition-all duration-300`}
-            />
-          </svg>
-          
-          {/* Central Information */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-            <div className="text-4xl font-bold text-neutral-800 dark:text-neutral-100">
-              {timeLeft}
-            </div>
-            <div className={`text-sm font-medium ${phaseColors[phase]}`}>
-              {phase.charAt(0).toUpperCase() + phase.slice(1)}
-            </div>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-neutral-500">
+            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+            </svg>
           </div>
         </div>
 
-        {/* Phase Description */}
-        <p className="text-neutral-600 dark:text-neutral-300 text-center max-w-xs">
-          {phaseDescriptions[phase]}
-        </p>
+        {/* Pattern Description */}
+        <div className="text-center">
+          <p className="text-sm text-neutral-600 dark:text-neutral-300 italic">
+            {selectedPattern.description}
+          </p>
+        </div>
 
-        {/* Cycle Indicator */}
-        {isActive && (
-          <div className="text-sm text-neutral-500 dark:text-neutral-400">
-            Cycle {cycles + 1} of {totalCycles}
+        {/* Timer and Visualization */}
+        <div className="flex flex-col items-center space-y-6">
+          {/* Circular Progress */}
+          <div className="relative w-52 h-52 md:w-64 md:h-64">
+            <svg className="w-full h-full transform -rotate-90">
+              <circle
+                cx="50%"
+                cy="50%"
+                r="45%"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="8"
+                className="text-neutral-200 dark:text-neutral-700 opacity-50"
+              />
+              <circle
+                cx="50%"
+                cy="50%"
+                r="45%"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="12"
+                strokeLinecap="round"
+                style={{
+                  strokeDasharray: `${2 * Math.PI * 45}%`,
+                  strokeDashoffset: `${2 * Math.PI * 45 * (1 - getProgressPercentage() / 100)}%`
+                }}
+                className={`${phaseColors[phase]} transition-all duration-300 ease-in-out`}
+              />
+            </svg>
+            
+            {/* Central Information */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+              <div className="text-5xl font-extrabold text-neutral-800 dark:text-neutral-100">
+                {timeLeft}
+              </div>
+              <div className={`text-sm font-semibold uppercase tracking-wider ${phaseColors[phase]}`}>
+                {phase}
+              </div>
+            </div>
           </div>
-        )}
-      </div>
 
-      {/* Controls */}
-      <div className="flex justify-center space-x-4">
-        {!isActive ? (
-          <button
-            onClick={startExercise}
-            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
-          >
-            Start
-          </button>
-        ) : (
-          <button
-            onClick={stopExercise}
-            className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-          >
-            Stop
-          </button>
-        )}
+          {/* Phase Description */}
+          <p className="text-neutral-600 dark:text-neutral-300 text-center max-w-xs text-sm">
+            {phaseDescriptions[phase]}
+          </p>
+
+          {/* Cycle Indicator */}
+          {isActive && (
+            <div className="text-xs text-neutral-500 dark:text-neutral-400 tracking-wider">
+              CYCLE {cycles + 1} OF {totalCycles}
+            </div>
+          )}
+        </div>
+
+        {/* Controls */}
+        <div className="flex justify-center space-x-4">
+          {!isActive ? (
+            <button
+              onClick={startExercise}
+              className="px-8 py-3 bg-primary text-white rounded-full text-base font-semibold hover:bg-primary/90 transition-colors duration-300 ease-in-out transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
+            >
+              Start
+            </button>
+          ) : (
+            <button
+              onClick={stopExercise}
+              className="px-8 py-3 bg-red-500 text-white rounded-full text-base font-semibold hover:bg-red-600 transition-colors duration-300 ease-in-out transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
+            >
+              Stop
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

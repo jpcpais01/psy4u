@@ -156,17 +156,15 @@ export default function Resources() {
 
   return (
     <div className="h-full flex flex-col gap-6 animate-fadeIn">
-      <div className="flex-1 overflow-y-auto px-3 pb-28">
-        {/* Theme toggle positioned at the top right */}
-        <div className="flex justify-end mt-4 mb-2">
-          <ThemeToggle />
-        </div>
-        
+      <div className="flex-1 overflow-y-auto px-3">
         {view === 'main' && (
           <div className="space-y-6">
             {/* Daily Wisdom */}
             <section className="peaceful-card p-6">
-              <h2 className="text-lg font-medium text-neutral-800 dark:text-neutral-100 mb-4">Daily Wisdom</h2>
+              <div className="flex justify-between items-start mb-4">
+                <h2 className="text-lg font-medium text-neutral-800 dark:text-neutral-100">Daily Wisdom</h2>
+                <ThemeToggle />
+              </div>
               <div className="bg-primary/5 dark:bg-primary/10 rounded-xl p-6 border border-primary/10 dark:border-primary/20">
                 <p className="text-lg text-neutral-800 dark:text-neutral-100 mb-2 font-medium">
                   &quot;All of humanity&apos;s problems stem from man&apos;s inability to sit quietly in a room alone.&quot;
